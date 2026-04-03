@@ -41,8 +41,19 @@
                         </a>
                     </li>
 
-                    <li class="nav-item {{ request()->routeIs('activity.activity') ? 'active' : '' }}">
-                        <a href="{{ route('activity.activity') }}" class="nav-link">
+                    <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                            <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="nav-text">Dashboard Admin</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item {{ request()->routeIs('aktivitas-olahraga') ? 'active' : '' }}">
+                        <a href="{{ route('aktivitas-olahraga') }}" class="nav-link">
                             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M22 12H18L15 21L9 3L6 12H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -66,6 +77,16 @@
                                 <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span class="nav-text">Artikel Kesehatan</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item {{ request()->routeIs('admin.create-artikel') ? 'active' : '' }}">
+                        <a href="{{ route('admin.create-artikel') }}" class="nav-link">
+                            <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="nav-text">Create Artikel</span>
                         </a>
                     </li>
                 </ul>

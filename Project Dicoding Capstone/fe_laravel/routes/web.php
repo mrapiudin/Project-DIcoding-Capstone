@@ -6,15 +6,26 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-// Dashboard
+// User Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard.dashboard');
 })->name('dashboard');
 
+// Admin Routes
+Route::prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+    
+    Route::get('/create-artikel', function () {
+        return view('admin.create-artikel');
+    })->name('admin.create-artikel');
+});
+
 // Aktivitas Olahraga
 Route::get('/aktivitas-olahraga', function () {
     return view('activity.activity');
-})->name('activity.activity');
+})->name('aktivitas-olahraga');
 
 // Tracking Tidur
 Route::get('/tracking-tidur', function () {

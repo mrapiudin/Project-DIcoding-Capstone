@@ -8,13 +8,13 @@ Route::get('/', function () {
 
 // Dashboard
 Route::get('/dashboard', function () {
-    return view('dashboard-example');
+    return view('dashboard.dashboard');
 })->name('dashboard');
 
 // Aktivitas Olahraga
 Route::get('/aktivitas-olahraga', function () {
-    return view('aktivitas-olahraga');
-})->name('aktivitas-olahraga');
+    return view('activity.activity');
+})->name('activity.activity');
 
 // Tracking Tidur
 Route::get('/tracking-tidur', function () {
@@ -25,11 +25,6 @@ Route::get('/tracking-tidur', function () {
 Route::get('/artikel-kesehatan', function () {
     return view('artikel-kesehatan');
 })->name('artikel-kesehatan');
-
-// Reminder
-Route::get('/reminder', function () {
-    return view('reminder');
-})->name('reminder');
 
 // Profile
 Route::get('/profile', function () {

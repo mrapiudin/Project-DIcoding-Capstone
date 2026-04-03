@@ -1,6 +1,156 @@
-@extends('layout-with-sidebar')
+@extends('template.sidebar')
 
 @section('title', 'Dashboard - HealthSpace')
+
+@push('styles')
+<style>
+/* Header Styles for Dashboard */
+.page-header {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.page-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Card Styles */
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Grid Layout */
+.grid {
+    display: grid;
+    gap: 24px;
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 1024px) {
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .grid-3,
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Table Styles */
+.table-container {
+    overflow-x: auto;
+    margin-top: 8px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.data-table th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.data-table td {
+    color: #6b7280;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-selesai {
+    background-color: #d1fae5;
+    color: #059669;
+}
+
+.status-proses {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.status-batal {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+/* Activity Icon */
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+</style>
+@endpush
 
 @section('content')
 <div class="page-header">
@@ -90,24 +240,93 @@
 </div>
 
 <div class="grid grid-2">
-    <!-- Statistik Aktivitas Fisik -->
+    <!-- Tabel Kegiatan -->
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title">Statistik Aktivitas Fisik</h2>
-            <select style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #6b7280;">
+            <h2 class="card-title">Tabel Kegiatan</h2>
+            <select style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #6b7280; cursor: pointer;">
                 <option>Minggu Ini</option>
                 <option>Bulan Ini</option>
                 <option>Tahun Ini</option>
             </select>
         </div>
-        <div style="height: 200px; display: flex; align-items: flex-end; gap: 12px; padding: 20px 0;">
-            <div style="flex: 1; background-color: #f3f4f6; height: 30%; border-radius: 4px;"></div>
-            <div style="flex: 1; background-color: #10b981; height: 60%; border-radius: 4px;"></div>
-            <div style="flex: 1; background-color: #f3f4f6; height: 40%; border-radius: 4px;"></div>
-            <div style="flex: 1; background-color: #10b981; height: 80%; border-radius: 4px;"></div>
-            <div style="flex: 1; background-color: #f3f4f6; height: 20%; border-radius: 4px;"></div>
-            <div style="flex: 1; background-color: #10b981; height: 100%; border-radius: 4px;"></div>
-            <div style="flex: 1; background-color: #f3f4f6; height: 50%; border-radius: 4px;"></div>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Kegiatan</th>
+                        <th>Durasi</th>
+                        <th>Kalori</th>
+                        <th>Tanggal</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="activity-icon" style="background-color: #d1fae5;">🏃</div>
+                                <span style="color: #111827; font-weight: 500;">Lari Pagi</span>
+                            </div>
+                        </td>
+                        <td>45 Min</td>
+                        <td>320 kcal</td>
+                        <td>24 Okt</td>
+                        <td><span class="status-badge status-selesai">● Selesai</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="activity-icon" style="background-color: #dbeafe;">🚴</div>
+                                <span style="color: #111827; font-weight: 500;">Bersepeda</span>
+                            </div>
+                        </td>
+                        <td>60 Min</td>
+                        <td>450 kcal</td>
+                        <td>23 Okt</td>
+                        <td><span class="status-badge status-selesai">● Selesai</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="activity-icon" style="background-color: #fef3c7;">🏋️</div>
+                                <span style="color: #111827; font-weight: 500;">Gym</span>
+                            </div>
+                        </td>
+                        <td>90 Min</td>
+                        <td>580 kcal</td>
+                        <td>22 Okt</td>
+                        <td><span class="status-badge status-proses">● Proses</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="activity-icon" style="background-color: #cffafe;">🧘</div>
+                                <span style="color: #111827; font-weight: 500;">Yoga</span>
+                            </div>
+                        </td>
+                        <td>30 Min</td>
+                        <td>120 kcal</td>
+                        <td>21 Okt</td>
+                        <td><span class="status-badge status-selesai">● Selesai</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="activity-icon" style="background-color: #fee2e2;">🏊</div>
+                                <span style="color: #111827; font-weight: 500;">Renang</span>
+                            </div>
+                        </td>
+                        <td>45 Min</td>
+                        <td>400 kcal</td>
+                        <td>20 Okt</td>
+                        <td><span class="status-badge status-batal">● Batal</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+            <a href="#" style="font-size: 13px; color: #10b981; text-decoration: none; font-weight: 500;">Lihat Semua →</a>
         </div>
     </div>
 

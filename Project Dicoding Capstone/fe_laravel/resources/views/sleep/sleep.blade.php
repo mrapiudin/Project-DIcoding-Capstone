@@ -1,4 +1,4 @@
-@extends('layout-with-sidebar')
+@extends('template.sidebar')
 
 @section('title', 'Tracking Tidur - HealthSpace')
 

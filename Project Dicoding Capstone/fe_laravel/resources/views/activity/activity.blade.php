@@ -1,6 +1,6 @@
-@extends('layout-with-sidebar')
+@extends('template.sidebar')
 
-@section('title', 'Aktivitas Olahraga - HealthSpace')
+@section('title', 'Activity - HealthSpace')
 
 @section('content')
 <div class="page-header">

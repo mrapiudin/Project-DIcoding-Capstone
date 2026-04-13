@@ -1,369 +1,371 @@
 @extends('template.sidebar')
-
-@section('title', 'Dashboard - HealthSpace')
+@section('title', 'Dashboard - VitaTrack')
+@section('page_title', 'Dashboard')
+@section('page_subtitle', 'Selamat datang kembali, pantau perkembangan kesehatanmu 🌿')
 
 @push('styles')
 <style>
-/* Header Styles for Dashboard */
-.page-header {
-    background-color: #ffffff;
-    padding: 24px;
-    border-radius: 12px;
-    margin-bottom: 24px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.hero-banner {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+    color: white;
 }
-
-.page-header h1 {
-    font-size: 28px;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 8px;
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    right: -80px; top: -80px;
+    background: radial-gradient(circle, rgba(255,255,255,.08) 0%, transparent 70%);
+    border-radius: 50%;
 }
-
-.page-header p {
-    color: #6b7280;
-    font-size: 14px;
+.hero-banner::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    right: 120px; bottom: -60px;
+    background: radial-gradient(circle, rgba(255,255,255,.05) 0%, transparent 70%);
+    border-radius: 50%;
 }
-
-/* Card Styles */
-.card {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.hero-greeting {
+    font-size: 13px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .1em; opacity: .7; margin-bottom: 6px;
 }
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
+.hero-title {
+    font-size: 28px; font-weight: 800;
+    color: #fff; margin-bottom: 8px;
 }
-
-.card-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #111827;
+.hero-desc {
+    font-size: 14px; opacity: .8; max-width: 460px;
 }
+.hero-date {
+    font-size: 13px; opacity: .65; margin-top: 18px;
+}
+.hero-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 20px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+}
+.hero-cta:hover { background: rgba(255,255,255,.25); }
 
-/* Grid Layout */
-.grid {
+/* Quick action cards */
+.quick-action-grid {
     display: grid;
-    gap: 24px;
-}
-
-.grid-3 {
     grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
 }
+@media(max-width:900px){ .quick-action-grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:560px){ .quick-action-grid { grid-template-columns: 1fr; } }
 
-.grid-2 {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-@media (max-width: 1024px) {
-    .grid-3 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .grid-3,
-    .grid-2 {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Table Styles */
-.table-container {
-    overflow-x: auto;
-    margin-top: 8px;
-}
-
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-}
-
-.data-table th,
-.data-table td {
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid #f3f4f6;
-}
-
-.data-table th {
-    background-color: #f9fafb;
-    font-weight: 600;
-    color: #374151;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.data-table td {
-    color: #6b7280;
-}
-
-.data-table tbody tr:hover {
-    background-color: #f9fafb;
-}
-
-.data-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* Status Badge */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.status-selesai {
-    background-color: #d1fae5;
-    color: #059669;
-}
-
-.status-proses {
-    background-color: #fef3c7;
-    color: #d97706;
-}
-
-.status-batal {
-    background-color: #fee2e2;
-    color: #dc2626;
-}
-
-/* Activity Icon */
-.activity-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+.quick-action-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 16px;
+    gap: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
 }
+.quick-action-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-green);
+    transform: translateY(-2px);
+}
+.qa-icon {
+    width: 46px; height: 46px;
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.qa-info { min-width: 0; }
+.qa-title { font-size: 14px; font-weight: 700; color: var(--text-1); margin-bottom: 2px; }
+.qa-value { font-size: 20px; font-weight: 800; font-family: 'Space Grotesk',sans-serif; }
+.qa-unit  { font-size: 12px; color: var(--text-3); }
+
+/* Activity row */
+.activity-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+.activity-row:last-child { border-bottom: none; }
+.activity-emoji {
+    width: 42px; height: 42px;
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+.activity-name { font-size: 14px; font-weight: 600; color: var(--text-1); }
+.activity-meta { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+.activity-right { margin-left: auto; text-align: right; }
+.activity-dur  { font-size: 15px; font-weight: 700; color: var(--text-1); }
+.activity-kal  { font-size: 12px; color: var(--text-3); }
+
+/* Sleep card */
+.sleep-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+.sleep-row:last-child { border-bottom: none; }
+.sleep-info { flex: 1; }
+.sleep-day  { font-size: 13px; font-weight: 600; color: var(--text-1); }
+.sleep-time { font-size: 12px; color: var(--text-3); }
+.sleep-duration { font-size: 16px; font-weight: 800; font-family: 'Space Grotesk',sans-serif; }
+.sleep-sub { font-size: 11px; color: var(--text-3); }
 </style>
 @endpush
 
 @section('content')
-<div class="page-header">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-            <h1>Selamat pagi, Budi!</h1>
-            <p>Pantau perkembangan kesehatanmu hari ini.</p>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="color: #6b7280; font-size: 14px;">📅 24 Okt 2023</span>
-        </div>
-    </div>
+
+{{-- Hero Banner --}}
+<div class="hero-banner">
+    <div class="hero-greeting">📅 {{ now()->translatedFormat('l, d F Y') }}</div>
+    <h1 class="hero-title">Selamat datang! 👋</h1>
+    <p class="hero-desc">Pantau perkembangan kesehatanmu hari ini. Tetap aktif, istirahat yang cukup, dan jaga pola hidup sehat.</p>
+    <a href="{{ route('aktivitas-olahraga') }}" class="hero-cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        Tambah Aktivitas
+    </a>
 </div>
 
-<div class="grid grid-3" style="margin-bottom: 24px;">
-    <!-- Card Total Olahraga -->
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 40px; height: 40px; background-color: #d1fae5; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22 12H18L15 21L9 3L6 12H2" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <span style="font-size: 14px; color: #6b7280;">Total Olahraga</span>
+{{-- Quick Stats --}}
+<div class="quick-action-grid">
+    <a href="{{ route('aktivitas-olahraga') }}" class="quick-action-card">
+        <div class="qa-icon" style="background:#d1fae5;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M22 12H18L15 21L9 3L6 12H2" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="qa-info">
+            <div class="qa-title">Total Olahraga</div>
+            <div style="display:flex;align-items:baseline;gap:4px;">
+                <span class="qa-value" style="color:#059669;" id="totalOlahraga">—</span>
+                <span class="qa-unit">menit</span>
             </div>
-            <button style="border: none; background: none; cursor: pointer; color: #9ca3af;">⋮</button>
         </div>
-        <div style="margin-bottom: 4px;">
-            <span style="font-size: 36px; font-weight: 600; color: #111827;">4.5</span>
-            <span style="font-size: 14px; color: #6b7280; margin-left: 4px;">Jam</span>
+    </a>
+    <a href="{{ route('tracking-tidur') }}" class="quick-action-card">
+        <div class="qa-icon" style="background:#dbeafe;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         </div>
-        <p style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">Minggu ini</p>
-        <div style="width: 100%; height: 6px; background-color: #f3f4f6; border-radius: 3px; overflow: hidden; margin-bottom: 8px;">
-            <div style="width: 75%; height: 100%; background: linear-gradient(90deg, #10b981 0%, #059669 100%);"></div>
-        </div>
-        <p style="font-size: 12px; color: #6b7280;">Target: 6 Jam</p>
-    </div>
-
-    <!-- Card Rata-rata Tidur -->
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 40px; height: 40px; background-color: #dbeafe; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 12.79C20.8427 14.4922 20.2039 16.1144 19.1583 17.4668C18.1127 18.8192 16.7035 19.8458 15.0957 20.4265C13.4879 21.0073 11.748 21.1181 10.0795 20.7461C8.41104 20.3741 6.88302 19.5345 5.67425 18.3258C4.46548 17.117 3.62596 15.589 3.25393 13.9205C2.8819 12.252 2.99274 10.5121 3.57348 8.9043C4.15423 7.29651 5.18085 5.88737 6.53324 4.84175C7.88562 3.79614 9.50782 3.15731 11.21 3C10.2134 4.34827 9.73387 6.00945 9.85856 7.68141C9.98324 9.35338 10.7039 10.9251 11.8894 12.1106C13.0749 13.2961 14.6466 14.0168 16.3186 14.1414C17.9906 14.2661 19.6517 13.7866 21 12.79Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <span style="font-size: 14px; color: #6b7280;">Rata-rata Tidur</span>
+        <div class="qa-info">
+            <div class="qa-title">Rata-rata Tidur</div>
+            <div style="display:flex;align-items:baseline;gap:4px;">
+                <span class="qa-value" style="color:#2563eb;" id="avgSleep">—</span>
+                <span class="qa-unit">jam</span>
             </div>
-            <button style="border: none; background: none; cursor: pointer; color: #9ca3af;">⋮</button>
         </div>
-        <div style="margin-bottom: 4px;">
-            <span style="font-size: 36px; font-weight: 600; color: #111827;">7.2</span>
-            <span style="font-size: 14px; color: #6b7280; margin-left: 4px;">Jam</span>
+    </a>
+    <a href="{{ route('artikel-kesehatan') }}" class="quick-action-card">
+        <div class="qa-icon" style="background:#ede9fe;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         </div>
-        <p style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">Per malam</p>
-        <div style="width: 100%; height: 6px; background-color: #f3f4f6; border-radius: 3px; overflow: hidden; margin-bottom: 8px;">
-            <div style="width: 90%; height: 100%; background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);"></div>
-        </div>
-        <p style="font-size: 12px; color: #6b7280;">Target: 8 Jam</p>
-    </div>
-
-    <!-- Card Konsumsi Air -->
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 40px; height: 40px; background-color: #cffafe; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2.69L17.66 8.35C18.5 9.18 19 10.34 19 11.55C19 14.03 16.97 16.06 14.5 16.06C12.02 16.06 10 14.03 10 11.55C10 10.34 10.5 9.18 11.34 8.35L12 2.69Z" stroke="#0891b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <span style="font-size: 14px; color: #6b7280;">Konsumsi Air</span>
+        <div class="qa-info">
+            <div class="qa-title">Artikel Tersedia</div>
+            <div style="display:flex;align-items:baseline;gap:4px;">
+                <span class="qa-value" style="color:#7c3aed;" id="totalArtikel">—</span>
+                <span class="qa-unit">artikel</span>
             </div>
-            <button style="border: none; background: none; cursor: pointer; color: #9ca3af;">⋮</button>
         </div>
-        <div style="margin-bottom: 4px;">
-            <span style="font-size: 36px; font-weight: 600; color: #111827;">1.5</span>
-            <span style="font-size: 14px; color: #6b7280; margin-left: 4px;">Liter</span>
-        </div>
-        <p style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">Hari ini</p>
-        <div style="width: 100%; height: 6px; background-color: #f3f4f6; border-radius: 3px; overflow: hidden; margin-bottom: 8px;">
-            <div style="width: 60%; height: 100%; background: linear-gradient(90deg, #06b6d4 0%, #0891b2 100%);"></div>
-        </div>
-        <p style="font-size: 12px; color: #6b7280;">Target: 2.5 Liter</p>
-    </div>
+    </a>
 </div>
 
+{{-- Main Grid --}}
 <div class="grid grid-2">
-    <!-- Tabel Kegiatan -->
+
+    {{-- Aktivitas Terbaru --}}
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title">Tabel Kegiatan</h2>
-            <select style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; color: #6b7280; cursor: pointer;">
-                <option>Minggu Ini</option>
-                <option>Bulan Ini</option>
-                <option>Tahun Ini</option>
-            </select>
+            <div class="card-title">Aktivitas Terbaru</div>
+            <a href="{{ route('aktivitas-olahraga') }}" class="btn btn-ghost btn-sm" style="color:var(--primary);">Lihat Semua →</a>
         </div>
-        <div class="table-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Kegiatan</th>
-                        <th>Durasi</th>
-                        <th>Kalori</th>
-                        <th>Tanggal</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="activity-icon" style="background-color: #d1fae5;">🏃</div>
-                                <span style="color: #111827; font-weight: 500;">Lari Pagi</span>
-                            </div>
-                        </td>
-                        <td>45 Min</td>
-                        <td>320 kcal</td>
-                        <td>24 Okt</td>
-                        <td><span class="status-badge status-selesai">● Selesai</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="activity-icon" style="background-color: #dbeafe;">🚴</div>
-                                <span style="color: #111827; font-weight: 500;">Bersepeda</span>
-                            </div>
-                        </td>
-                        <td>60 Min</td>
-                        <td>450 kcal</td>
-                        <td>23 Okt</td>
-                        <td><span class="status-badge status-selesai">● Selesai</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="activity-icon" style="background-color: #fef3c7;">🏋️</div>
-                                <span style="color: #111827; font-weight: 500;">Gym</span>
-                            </div>
-                        </td>
-                        <td>90 Min</td>
-                        <td>580 kcal</td>
-                        <td>22 Okt</td>
-                        <td><span class="status-badge status-proses">● Proses</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="activity-icon" style="background-color: #cffafe;">🧘</div>
-                                <span style="color: #111827; font-weight: 500;">Yoga</span>
-                            </div>
-                        </td>
-                        <td>30 Min</td>
-                        <td>120 kcal</td>
-                        <td>21 Okt</td>
-                        <td><span class="status-badge status-selesai">● Selesai</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="activity-icon" style="background-color: #fee2e2;">🏊</div>
-                                <span style="color: #111827; font-weight: 500;">Renang</span>
-                            </div>
-                        </td>
-                        <td>45 Min</td>
-                        <td>400 kcal</td>
-                        <td>20 Okt</td>
-                        <td><span class="status-badge status-batal">● Batal</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
-            <a href="#" style="font-size: 13px; color: #10b981; text-decoration: none; font-weight: 500;">Lihat Semua →</a>
+        <div id="activityList">
+            <div class="empty-state">
+                <div style="font-size:40px;margin-bottom:8px;">🏃</div>
+                <div class="empty-state-title">Memuat data...</div>
+            </div>
         </div>
     </div>
 
-    <!-- Aktivitas Terakhir -->
+    {{-- Riwayat Tidur --}}
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title">Aktivitas Terakhir</h2>
-            <a href="#" style="font-size: 14px; color: #10b981; text-decoration: none;">Lihat Semua</a>
+            <div class="card-title">Riwayat Tidur</div>
+            <a href="{{ route('tracking-tidur') }}" class="btn btn-ghost btn-sm" style="color:var(--info);">Lihat Semua →</a>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-            <div style="display: flex; gap: 12px; align-items: start;">
-                <div style="width: 48px; height: 48px; background-color: #d1fae5; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    🏃
-                </div>
-                <div style="flex: 1;">
-                    <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">Lari Pagi</h3>
-                    <p style="font-size: 13px; color: #6b7280;">Hari ini, 06:00 AM</p>
-                </div>
-                <div style="text-align: right;">
-                    <p style="font-size: 16px; font-weight: 600;">45 Min</p>
-                    <p style="font-size: 12px; color: #6b7280;">320 kcal</p>
-                </div>
-            </div>
-            <div style="display: flex; gap: 12px; align-items: start;">
-                <div style="width: 48px; height: 48px; background-color: #dbeafe; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    😴
-                </div>
-                <div style="flex: 1;">
-                    <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">Tidur Malam</h3>
-                    <p style="font-size: 13px; color: #6b7280;">Kemarin, 22:30 PM</p>
-                </div>
-                <div style="text-align: right;">
-                    <p style="font-size: 16px; font-weight: 600;">7h 15m</p>
-                    <p style="font-size: 12px; color: #6b7280;">Kualitas Baik</p>
-                </div>
+        <div id="sleepList">
+            <div class="empty-state">
+                <div style="font-size:40px;margin-bottom:8px;">😴</div>
+                <div class="empty-state-title">Memuat data...</div>
             </div>
         </div>
     </div>
+
 </div>
+
+{{-- Artikel Terbaru --}}
+<div class="card mb-6" style="margin-top:24px;">
+    <div class="card-header">
+        <div class="card-title">Artikel Kesehatan Terbaru</div>
+        <a href="{{ route('artikel-kesehatan') }}" class="btn btn-ghost btn-sm" style="color:var(--accent);">Lihat Semua →</a>
+    </div>
+    <div id="artikelList" class="grid grid-3" style="gap:16px;">
+        <div class="empty-state" style="grid-column:1/-1;">
+            <div style="font-size:40px;margin-bottom:8px;">📰</div>
+            <div class="empty-state-title">Memuat artikel...</div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+const API_BASE = '/api';
+
+const CATEGORIES = {
+    'lari': {icon:'🏃', bg:'#d1fae5'},
+    'bersepeda': {icon:'🚴', bg:'#dbeafe'},
+    'gym': {icon:'🏋️', bg:'#fef3c7'},
+    'yoga': {icon:'🧘', bg:'#cffafe'},
+    'renang': {icon:'🏊', bg:'#fce7f3'},
+    'default': {icon:'💪', bg:'#f3f4f6'},
+};
+function getCategory(name='') {
+    const k = name.toLowerCase();
+    for (const key of Object.keys(CATEGORIES)) {
+        if (k.includes(key)) return CATEGORIES[key];
+    }
+    return CATEGORIES.default;
+}
+
+async function loadActivities() {
+    try {
+        const res = await fetch(`${API_BASE}/activities`);
+        const json = await res.json();
+        const data = (json.data || []).slice(0,5);
+        const el = document.getElementById('activityList');
+        if (!data.length) {
+            el.innerHTML = `<div class="empty-state"><div style="font-size:42px;">🏃</div><div class="empty-state-title">Belum ada aktivitas</div><a href="{{ route('aktivitas-olahraga') }}" class="btn btn-primary btn-sm mt-4">Tambah Sekarang</a></div>`;
+            document.getElementById('totalOlahraga').textContent = '0';
+            return;
+        }
+        let total = 0;
+        let html = '';
+        data.forEach(a => {
+            total += parseInt(a.durasi)||0;
+            const cat = getCategory(a.nama_aktivitas);
+            html += `<div class="activity-row">
+                <div class="activity-emoji" style="background:${cat.bg}">${cat.icon}</div>
+                <div><div class="activity-name">${a.nama_aktivitas}</div><div class="activity-meta">${a.kategori} • ${a.day||''}</div></div>
+                <div class="activity-right"><div class="activity-dur">${a.durasi} min</div></div>
+            </div>`;
+        });
+        el.innerHTML = html;
+        document.getElementById('totalOlahraga').textContent = total;
+    } catch(e) {
+        document.getElementById('activityList').innerHTML = `<div class="empty-state"><div class="empty-state-title">Tidak dapat memuat data</div></div>`;
+    }
+}
+
+async function loadSleep() {
+    try {
+        const res = await fetch(`${API_BASE}/sleep`);
+        const json = await res.json();
+        const data = (json.data || []).slice(0,5);
+        const el = document.getElementById('sleepList');
+        if (!data.length) {
+            el.innerHTML = `<div class="empty-state"><div style="font-size:42px;">😴</div><div class="empty-state-title">Belum ada data tidur</div><a href="{{ route('tracking-tidur') }}" class="btn btn-primary btn-sm mt-4">Catat Tidur</a></div>`;
+            document.getElementById('avgSleep').textContent = '0';
+            return;
+        }
+        let totalMin = 0;
+        let html = '';
+        data.forEach(s => {
+            totalMin += parseInt(s.total)||0;
+            const jam = Math.floor((parseInt(s.total)||0)/60);
+            const mnt = (parseInt(s.total)||0)%60;
+            const quality = jam >= 7 ? {label:'Baik', color:'#059669'} : jam >= 5 ? {label:'Cukup', color:'#d97706'} : {label:'Kurang', color:'#dc2626'};
+            html += `<div class="sleep-row">
+                <div class="avatar avatar-md" style="background:linear-gradient(135deg,#818cf8,#6366f1)">😴</div>
+                <div class="sleep-info">
+                    <div class="sleep-day">${s.day||'—'}</div>
+                    <div class="sleep-time">${s.jam_tidur} – ${s.jam_bangun}</div>
+                </div>
+                <div style="text-align:right">
+                    <div class="sleep-duration">${jam}j ${mnt}m</div>
+                    <div style="font-size:11px;font-weight:600;color:${quality.color}">${quality.label}</div>
+                </div>
+            </div>`;
+        });
+        el.innerHTML = html;
+        const avg = data.length ? (totalMin/data.length/60).toFixed(1) : '0';
+        document.getElementById('avgSleep').textContent = avg;
+    } catch(e) {
+        document.getElementById('sleepList').innerHTML = `<div class="empty-state"><div class="empty-state-title">Tidak dapat memuat data</div></div>`;
+    }
+}
+
+async function loadArtikel() {
+    try {
+        const res = await fetch(`${API_BASE}/articles`);
+        const json = await res.json();
+        const data = (json.data || []).slice(0,3);
+        const el = document.getElementById('artikelList');
+        document.getElementById('totalArtikel').textContent = json.data?.length || 0;
+        if (!data.length) {
+            el.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-title">Belum ada artikel</div></div>`;
+            return;
+        }
+        const gradients = ['linear-gradient(135deg,#10b981,#059669)','linear-gradient(135deg,#3b82f6,#2563eb)','linear-gradient(135deg,#8b5cf6,#6d28d9)'];
+        let html = '';
+        data.forEach((a,i) => {
+            const dateStr = a.date ? new Date(a.date).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}) : '—';
+            html += `<div class="card" style="padding:0;overflow:hidden;border:1px solid var(--border);">
+                <div style="height:120px;background:${gradients[i%gradients.length]};position:relative;">
+                    ${a.image?`<img src="${a.image}" style="width:100%;height:100%;object-fit:cover;" alt="">`:''}
+                </div>
+                <div style="padding:16px;">
+                    <div style="font-size:11px;color:var(--text-3);margin-bottom:6px;">${dateStr}</div>
+                    <div style="font-size:14px;font-weight:700;color:var(--text-1);margin-bottom:6px;line-height:1.4;">${a.judul}</div>
+                    ${a.sub_judul?`<div style="font-size:12px;color:var(--text-2);">${a.sub_judul}</div>`:''}
+                    ${a.tautan?`<a href="${a.tautan}" target="_blank" class="btn btn-ghost btn-sm" style="margin-top:10px;color:var(--primary);padding-left:0;">Baca →</a>`:''}
+                </div>
+            </div>`;
+        });
+        el.innerHTML = html;
+    } catch(e) {
+        document.getElementById('artikelList').innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-title">Tidak dapat memuat artikel</div></div>`;
+    }
+}
+
+loadActivities();
+loadSleep();
+loadArtikel();
+</script>
+@endpush
 @endsection

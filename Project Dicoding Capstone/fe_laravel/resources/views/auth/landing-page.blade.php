@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthSpace - Platform Kesehatan Digital</title>
+    <title>VitaTrack - Platform Kesehatan Digital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
@@ -302,7 +302,7 @@
                         <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
-                <span class="logo-text">HealthSpace</span>
+                <span class="logo-text">VitaTrack</span>
             </a>
             <div class="nav-buttons">
                 <a href="{{ route('login') }}" class="btn btn-outline">Masuk</a>
@@ -373,7 +373,7 @@
     </section>
 
     <footer class="footer">
-        <p>&copy; 2024 HealthSpace. All rights reserved.</p>
+        <p>&copy; 2024 VitaTrack. All rights reserved.</p>
     </footer>
 </body>
 </html>
